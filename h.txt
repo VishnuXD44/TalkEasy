@@ -1,8 +1,0 @@
-
- apiKey: "AIzaSyCFYoiwOS_2zZdYNso-AFvoRb3KunkvLaQ",
-  authDomain: "talkeasy-42018.firebaseapp.com",
-  projectId: "talkeasy-42018",
-  storageBucket: "talkeasy-42018.firebasestorage.app",
-  messagingSenderId: "282650585585",
-  appId: "1:282650585585:web:39b9cf4dc9fbbae6e07c50",
-  measurementId: "G-QPXSXVHNNC"
