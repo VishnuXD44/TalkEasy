@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Chat App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="auth-container">
+        <h1>Random Chat App</h1>
+        <button id="login-btn">Login with Google</button>
+    </div>
+
+    <div id="chat-container" class="hidden">
+        <div id="video-grid">
+            <video id="local-video" autoplay playsinline muted></video>
+            <video id="remote-video" autoplay playsinline></video>
+        </div>
+        <div class="controls">
+            <button id="next-btn">Next Person</button>
+            <button id="logout-btn">Logout</button>
+        </div>
+    </div>
+
+    <!-- Use type="module" for your scripts -->
+    <script type="module" src="config.js"></script>
+    <script type="module" src="app.js"></script>
+</body>
+</html>
