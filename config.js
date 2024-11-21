@@ -2,14 +2,18 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebas
 import { getAuth, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-auth.js";
 import { getDatabase } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-database.js";
 
+// Fetch environment variables from server
+const response = await fetch('/env-config');
+const env = await response.json();
+
 const firebaseConfig = {
-    apiKey: "AIzaSyCFYoiwOS_2zZdYNso-AFvoRb3KunkvLaQ",
-    authDomain: "talkeasy-42018.firebaseapp.com",
-    projectId: "talkeasy-42018",
-    storageBucket: "talkeasy-42018.firebasestorage.app",
-    messagingSenderId: "282650585585",
-    appId: "1:282650585585:web:39b9cf4dc9fbbae6e07c50",
-    measurementId: "G-QPXSXVHNNC"
+    apiKey: env.FIREBASE_API_KEY,
+    authDomain: env.FIREBASE_AUTH_DOMAIN,
+    projectId: env.FIREBASE_PROJECT_ID,
+    storageBucket: env.FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: env.FIREBASE_MESSAGING_SENDER_ID,
+    appId: env.FIREBASE_APP_ID,
+    measurementId: env.FIREBASE_MEASUREMENT_ID
 };
 
 const app = initializeApp(firebaseConfig);
