@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TalkEasy - Chat Room</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="chat-page">
+    <nav class="navbar">
+        <div class="logo-container">
+            <img src="logo.jpg" alt="TalkEasy Logo" class="nav-logo">
+            <span class="brand-name">TalkEasy</span>
+        </div>
+        <button id="logout-btn" class="nav-button">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+    </nav>
+
+    <div id="chat-container">
+        <div id="video-grid">
+            <video id="local-video" autoplay playsinline muted></video>
+            <video id="remote-video" autoplay playsinline></video>
+        </div>
+        <div class="controls">
+            <button id="next-btn" class="control-button">
+                <i class="fas fa-random"></i> Next Person
+            </button>
+            <button id="camera-btn" class="control-button">
+                <i class="fas fa-video"></i>
+            </button>
+            <button id="mic-btn" class="control-button">
+                <i class="fas fa-microphone"></i>
+            </button>
+        </div>
+    </div>
+
+    <script type="module" src="config.js"></script>
+    <script type="module" src="chat.js"></script>
+</body>
+</html>

@@ -1,63 +1,55 @@
-import { auth, database, provider } from './config.js';
-import { signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-auth.js";
+import { auth, database } from './config.js';
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-auth.js";
 import { ref, set, get, onValue, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-database.js";
 
-// DOM Elements
-const loginBtn = document.getElementById('login-btn');
-const logoutBtn = document.getElementById('logout-btn');
+// Global state
+let localStream = null;
+let peerConnection = null;
+let currentUser = null;
+let isCameraOn = true;
+let isMicOn = true;
 
-// Authentication Functions
-async function handleLogin() {
-    try {
-        console.log("Login attempt starting..."); // Debug log
-        const result = await signInWithPopup(auth, provider);
-        console.log("Login successful", result.user); // Debug log
-    } catch (error) {
-        console.error("Login error:", error);
-        alert(`Login failed: ${error.message}`);
-    }
-}
+// WebRTC configuration
+const configuration = {
+    iceServers: [
+        { urls: 'stun:stun.l.google.com:19302' }
+    ]
+};
+
+// DOM Elements
+const logoutBtn = document.getElementById('logout-btn');
+const nextBtn = document.getElementById('next-btn');
+const cameraBtn = document.getElementById('camera-btn');
+const micBtn = document.getElementById('mic-btn');
+const localVideo = document.getElementById('local-video');
+const remoteVideo = document.getElementById('remote-video');
 
 // Event Listeners
-if (loginBtn) {
-    console.log("Login button found"); // Debug log
-    loginBtn.addEventListener('click', async (e) => {
-        e.preventDefault();
-        console.log("Login button clicked"); // Debug log
-        await handleLogin();
-    });
+function setupEventListeners() {
+    logoutBtn?.addEventListener('click', handleLogout);
+    nextBtn?.addEventListener('click', handleNext);
+    cameraBtn?.addEventListener('click', toggleCamera);
+    micBtn?.addEventListener('click', toggleMic);
+    window.addEventListener('beforeunload', cleanup);
 }
 
-// Auth State Observer
-onAuthStateChanged(auth, (user) => {
-    console.log("Auth state changed:", user ? "logged in" : "logged out"); // Debug log
-    if (user) {
-        window.location.href = 'chat.html';
-    }
-});
-
-// Rest of your app.js code...
-
-
-// Login handler function
-async function handleLogin() {
+// Authentication Functions
+async function handleLogout() {
     try {
-        const provider = new GoogleAuthProvider();
-        const result = await signInWithPopup(auth, provider);
-        console.log("Login successful:", result.user.uid); // Debug log
+        await signOut(auth);
+        window.location.href = 'index.html';
     } catch (error) {
-        console.error('Login error:', error);
-        alert('Failed to login. Please try again.');
+        console.error('Logout error:', error);
+        alert('Failed to logout. Please try again.');
     }
 }
-
 
 // Media Stream Functions
 async function setupMediaStream() {
     try {
         localStream = await navigator.mediaDevices.getUserMedia({
             video: true,
-            audio: true,
+            audio: true
         });
         localVideo.srcObject = localStream;
     } catch (error) {
@@ -68,7 +60,7 @@ async function setupMediaStream() {
 
 function stopMediaStream() {
     if (localStream) {
-        localStream.getTracks().forEach((track) => track.stop());
+        localStream.getTracks().forEach(track => track.stop());
         localVideo.srcObject = null;
     }
     if (peerConnection) {
@@ -77,9 +69,8 @@ function stopMediaStream() {
     }
 }
 
-// Media Control Functions
 function toggleCamera() {
-    const videoTrack = localStream.getVideoTracks()[0];
+    const videoTrack = localStream?.getVideoTracks()[0];
     if (videoTrack) {
         isCameraOn = !isCameraOn;
         videoTrack.enabled = isCameraOn;
@@ -90,7 +81,7 @@ function toggleCamera() {
 }
 
 function toggleMic() {
-    const audioTrack = localStream.getAudioTracks()[0];
+    const audioTrack = localStream?.getAudioTracks()[0];
     if (audioTrack) {
         isMicOn = !isMicOn;
         audioTrack.enabled = isMicOn;
@@ -108,14 +99,12 @@ function findPeer() {
         const waitingUser = snapshot.val();
 
         if (!waitingUser || waitingUser.uid === currentUser.uid) {
-            // No one waiting, add self to waiting list
             await set(waitingRef, {
                 uid: currentUser.uid,
-                timestamp: serverTimestamp(),
+                timestamp: serverTimestamp()
             });
             waitForPeer();
         } else {
-            // Connect with waiting user
             initiatePeerConnection(waitingUser.uid);
         }
     });
@@ -134,40 +123,34 @@ function waitForPeer() {
 function initiatePeerConnection(peerId) {
     peerConnection = new RTCPeerConnection(configuration);
 
-    // Add local stream
-    localStream.getTracks().forEach((track) => {
+    localStream.getTracks().forEach(track => {
         peerConnection.addTrack(track, localStream);
     });
 
-    // Handle ICE candidates
     peerConnection.onicecandidate = (event) => {
         if (event.candidate) {
             const connectionRef = ref(database, `connections/${peerId}`);
             set(connectionRef, {
                 type: "candidate",
-                candidate: event.candidate,
+                candidate: event.candidate
             });
         }
     };
 
-    // Handle incoming stream
     peerConnection.ontrack = (event) => {
         remoteVideo.srcObject = event.streams[0];
     };
 
-    // Create and send offer
-    peerConnection
-        .createOffer()
-        .then((offer) => peerConnection.setLocalDescription(offer))
+    peerConnection.createOffer()
+        .then(offer => peerConnection.setLocalDescription(offer))
         .then(() => {
             const connectionRef = ref(database, `connections/${peerId}`);
             set(connectionRef, {
                 type: "offer",
-                offer: peerConnection.localDescription,
+                offer: peerConnection.localDescription
             });
         });
 
-    // Listen for answer and ICE candidates
     const userConnectionRef = ref(database, `connections/${currentUser.uid}`);
     onValue(userConnectionRef, (snapshot) => {
         const data = snapshot.val();
@@ -181,18 +164,31 @@ function initiatePeerConnection(peerId) {
     });
 }
 
-// Handle Next Button
+// Utility Functions
 async function handleNext() {
     stopMediaStream();
     await setupMediaStream();
     findPeer();
 }
 
-// Handle page unload
-window.addEventListener('beforeunload', () => {
+function cleanup() {
     stopMediaStream();
     if (currentUser) {
         const waitingRef = ref(database, "waiting");
         set(waitingRef, null);
     }
+}
+
+// Auth State Observer
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        currentUser = user;
+        await setupMediaStream();
+        findPeer();
+    } else {
+        window.location.href = 'index.html';
+    }
 });
+
+// Initialize
+setupEventListeners();
