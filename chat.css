@@ -1,0 +1,363 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --accent-green: #4ADE80;
+    --bg-dark: #0A0A0A;
+    --text-primary: #FFFFFF;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+}
+
+body.chat-page {
+    font-family: 'Space Grotesk', sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Navbar */
+.navbar {
+    background: rgba(0, 0, 0, 0.95);
+    padding: 12px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    height: 60px;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nav-logo {
+    height: 24px;
+    width: auto;
+    filter: brightness(1.2);
+}
+
+.brand-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.nav-button {
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Main Container Layout */
+.main-container {
+    flex: 1;
+    padding: 40px 20px 20px; /* Increased top padding */
+    height: calc(100vh - 60px);
+}
+
+/* Chat Container */
+#chat-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    height: 100%;
+    max-width: 1400px; /* Increased max-width */
+    margin: 0 auto;
+}
+
+/* Video Grid */
+#video-grid {
+    display: flex;
+    gap: 24px;
+    height: 350px; /* Increased height */
+    padding: 0 40px; /* Added horizontal padding for width control */
+}
+
+.video-wrapper {
+    position: relative;
+    width: 50%;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: rgba(0, 0, 0, 0.8);
+}
+
+#local-video {
+    transform: scaleX(-1);
+}
+
+.video-label {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* Bottom Section */
+.bottom-section {
+    display: flex;
+    gap: 24px;
+    height: 100px;
+    padding: 0 40px; /* Added horizontal padding to match video grid */
+}
+
+/* Chat Content Area */
+.chat-content {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.content-placeholder {
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.content-placeholder h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+/* Ad Space */
+.ad-space {
+    width: 300px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ad-placeholder {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+/* Controls */
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    padding: 16px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    margin: 0 40px; /* Added horizontal margin to match other sections */
+}
+
+.control-button {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    border: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.control-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.control-button.primary {
+    background: var(--accent-green);
+    color: var(--bg-dark);
+    width: auto;
+    padding: 0 24px;
+    border-radius: 24px;
+    font-weight: 500;
+    display: flex;
+    gap: 8px;
+}
+
+.control-button.primary:hover {
+    background: #5BE490;
+}
+
+.control-button i {
+    font-size: 18px;
+}
+
+.control-button.off {
+    background: #ff4444;
+    color: var(--text-primary);
+}
+
+/* Waiting Screen */
+.waiting-screen {
+    position: fixed;
+    inset: 0;
+    background: var(--bg-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.waiting-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.pulse-dot {
+    width: 24px;
+    height: 24px;
+    background: var(--accent-green);
+    border-radius: 50%;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+.waiting-screen h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.waiting-screen p {
+    color: var(--text-secondary);
+    font-size: 16px;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Animations */
+@keyframes pulse {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7);
+    }
+    
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 10px rgba(74, 222, 128, 0);
+    }
+    
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(74, 222, 128, 0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    #chat-container {
+        max-width: 100%;
+    }
+    
+    #video-grid,
+    .bottom-section,
+    .controls {
+        padding: 0 20px;
+    }
+}
+
+@media (max-width: 968px) {
+    .bottom-section {
+        flex-direction: column;
+        height: auto;
+        gap: 10px;
+    }
+
+    .ad-space {
+        width: 100%;
+        height: 100px;
+    }
+
+    #video-grid {
+        height: 300px;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-container {
+        padding: 20px 10px 10px;
+    }
+
+    #video-grid {
+        flex-direction: column;
+        height: auto;
+        padding: 0 10px;
+    }
+
+    .video-wrapper {
+        width: 100%;
+        height: 200px;
+    }
+
+    .bottom-section,
+    .controls {
+        padding: 0 10px;
+    }
+
+    .controls {
+        padding: 12px;
+    }
+
+    .control-button {
+        width: 42px;
+        height: 42px;
+    }
+
+    .control-button.primary {
+        padding: 0 20px;
+    }
+
+    .brand-name {
+        font-size: 20px;
+    }
+
+    .nav-logo {
+        height: 20px;
+    }
+}

@@ -4,35 +4,74 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TalkEasy - Chat Room</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="chat.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="chat-page">
     <nav class="navbar">
         <div class="logo-container">
-            <img src="logo.jpg" alt="TalkEasy Logo" class="nav-logo">
+            <img src="logo.svg" alt="TalkEasy Logo" class="nav-logo">
             <span class="brand-name">TalkEasy</span>
         </div>
-        <button id="logout-btn" class="nav-button">
-            <i class="fas fa-sign-out-alt"></i> Logout
-        </button>
+        <div class="nav-controls">
+            <button id="logout-btn" class="nav-button">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Exit</span>
+            </button>
+        </div>
     </nav>
 
-    <div id="chat-container">
-        <div id="video-grid">
-            <video id="local-video" autoplay playsinline muted></video>
-            <video id="remote-video" autoplay playsinline></video>
+    <div class="main-container">
+        <!-- Main Chat Area -->
+        <div id="chat-container">
+            <div id="video-grid">
+                <div class="video-wrapper">
+                    <video id="remote-video" autoplay playsinline></video>
+                    <div class="video-label">Partner</div>
+                </div>
+                <div class="video-wrapper">
+                    <video id="local-video" autoplay playsinline muted></video>
+                    <div class="video-label">You</div>
+                </div>
+            </div>
+            
+            <div class="bottom-section">
+                <div class="chat-content">
+                    <div class="content-placeholder">
+                        <h3>Tip: Try asking about their hobbies and interests!</h3>
+                    </div>
+                </div>
+
+                <div class="ad-space">
+                    <div class="ad-placeholder">
+                        <span>Promotional Space</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button id="next-btn" class="control-button primary">
+                    <i class="fas fa-random"></i>
+                    <span>Next</span>
+                </button>
+                <button id="camera-btn" class="control-button">
+                    <i class="fas fa-video"></i>
+                </button>
+                <button id="mic-btn" class="control-button">
+                    <i class="fas fa-microphone"></i>
+                </button>
+            </div>
         </div>
-        <div class="controls">
-            <button id="next-btn" class="control-button">
-                <i class="fas fa-random"></i> Next Person
-            </button>
-            <button id="camera-btn" class="control-button">
-                <i class="fas fa-video"></i>
-            </button>
-            <button id="mic-btn" class="control-button">
-                <i class="fas fa-microphone"></i>
-            </button>
+    </div>
+
+    <div id="waiting-screen" class="waiting-screen hidden">
+        <div class="waiting-content">
+            <div class="pulse-dot"></div>
+            <h2>Finding a conversation partner...</h2>
+            <p>This might take a few seconds</p>
         </div>
     </div>
 
