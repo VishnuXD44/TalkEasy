@@ -24,67 +24,114 @@ body {
     overflow: hidden;
 }
 
-/* Background Elements */
-.background {
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-}
-
-.gradient-bg {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        135deg,
-        #000000 0%,
-        #111111 50%,
-        #1a1a1a 100%
-    );
-}
+/* Keep all existing styles the same, but replace the wave-related sections with these improved versions: */
 
 .waves {
     position: absolute;
-    bottom: -10%; /* Move waves down to hide the end */
-    width: 100%;
-    height: 50vh; /* Increased height for better coverage */
-    min-height: 400px;
-    transform: scale(1.5); /* Scale up waves for better coverage */
+    bottom: -10%;  /* Adjusted from -20% to show more waves */
+    width: 400%;   /* Increased from 300% for smoother animation */
+    height: 100vh; /* Increased from 80vh for fuller waves */
+    left: -150%;   /* Adjusted from -100% for better positioning */
+    overflow: hidden;
+    z-index: 0;
 }
 
 .waves-svg {
     position: absolute;
     width: 100%;
     height: 100%;
+    transform: translateY(10%); /* Added to position waves better */
+}
+
+.wave1, .wave2, .wave3 {
+    fill: none;
+    stroke-width: 2px; /* Increased from 1px for better visibility */
+    transform-origin: center bottom;
+    will-change: transform; /* Performance optimization */
+    filter: blur(0.5px); /* Subtle blur for smoother appearance */
 }
 
 .wave1 {
-    fill: rgba(255, 255, 255, 0.02);
-    animation: waveAnimation 25s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite;
+    opacity: 0.4; /* Increased from 0.3 */
+    stroke: rgba(255, 255, 255, 0.4);
+    animation: wave 24s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite;
+    stroke-width: 1.5px;
 }
 
 .wave2 {
-    fill: rgba(255, 255, 255, 0.03);
-    animation: waveAnimation 20s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite;
-    animation-delay: -5s;
+    opacity: 0.3; /* Increased from 0.2 */
+    stroke: rgba(255, 255, 255, 0.3);
+    animation: wave 18s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite;
+    animation-delay: -6s;
+    stroke-width: 2px;
 }
 
 .wave3 {
-    fill: rgba(255, 255, 255, 0.01);
-    animation: waveAnimation 15s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite;
-    animation-delay: -2s;
+    opacity: 0.2; /* Increased from 0.1 */
+    stroke: rgba(255, 255, 255, 0.2);
+    animation: wave 15s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite;
+    animation-delay: -3s;
+    stroke-width: 2.5px;
 }
 
-@keyframes waveAnimation {
+@keyframes wave {
     0% {
-        transform: translateX(-25%) translateY(3%);
+        transform: translateX(0) scaleY(1) translateY(0);
+    }
+    25% {
+        transform: translateX(-7.5%) scaleY(0.95) translateY(2px);
     }
     50% {
-        transform: translateX(-35%) translateY(0%);
+        transform: translateX(-15%) scaleY(1.1) translateY(-2px);
+    }
+    75% {
+        transform: translateX(-22.5%) scaleY(0.95) translateY(2px);
     }
     100% {
-        transform: translateX(-25%) translateY(3%);
+        transform: translateX(-30%) scaleY(1) translateY(0);
     }
 }
+
+/* Improved responsive design for waves */
+@media (max-width: 768px) {
+    .waves {
+        height: 50vh;
+        min-height: 400px;
+        bottom: -5%;
+    }
+
+    .wave1, .wave2, .wave3 {
+        stroke-width: 1.5px;
+    }
+
+    @keyframes wave {
+        0% {
+            transform: translateX(0) scaleY(1) translateY(0);
+        }
+        25% {
+            transform: translateX(-7.5%) scaleY(0.95) translateY(1px);
+        }
+        50% {
+            transform: translateX(-15%) scaleY(1.05) translateY(-1px);
+        }
+        75% {
+            transform: translateX(-22.5%) scaleY(0.95) translateY(1px);
+        }
+        100% {
+            transform: translateX(-30%) scaleY(1) translateY(0);
+        }
+    }
+}
+
+/* Add this for ultra-wide screens */
+@media (min-width: 2000px) {
+    .waves {
+        width: 500%;
+        left: -200%;
+    }
+}
+
+
 
 /* Main Container */
 .hero-container {
@@ -307,8 +354,4 @@ p {
         font-size: 16px;
     }
 
-    .waves {
-        height: 40vh;
-        min-height: 300px;
-    }
 }

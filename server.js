@@ -1,15 +1,25 @@
 const express = require('express');
-const path = require('path');
-require('dotenv').config();
-
 const app = express();
-const port = process.env.PORT || 3000;
+const http = require('http').Server(app);
+const cors = require('cors');
+require('dotenv').config();
+const io = require('socket.io')(http, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
+});
+const path = require('path');
+
+// Enable CORS
+app.use(cors());
 
 // Serve static files
-app.use(express.static(path.join(__dirname)));
+app.use(express.static(__dirname));
 
-// Handle environment variables request
+// Environment config route
 app.get('/env-config', (req, res) => {
+    // Send Firebase config from your existing .env file
     res.json({
         FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,
         FIREBASE_AUTH_DOMAIN: process.env.FIREBASE_AUTH_DOMAIN,
@@ -21,17 +31,30 @@ app.get('/env-config', (req, res) => {
     });
 });
 
-// Serve index.html for root route
+// Main route
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Handle chat route
+// Chat route
 app.get('/chat', (req, res) => {
     res.sendFile(path.join(__dirname, 'chat.html'));
 });
 
-// Start server
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
+// Socket connection handling
+io.on('connection', (socket) => {
+    console.log('A user connected');
+
+    socket.on('chat message', (msg) => {
+        io.emit('chat message', msg);
+    });
+
+    socket.on('disconnect', () => {
+        console.log('User disconnected');
+    });
+});
+
+const PORT = process.env.PORT || 5000;
+http.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
