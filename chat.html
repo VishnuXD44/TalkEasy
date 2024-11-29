@@ -3,22 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TalkEasy - Chat Room</title>
+    <title>Gengo.live - Chat Room</title>
     <link rel="stylesheet" href="chat.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="moderation.css">
-
 </head>
 <body class="chat-page">
+    <div class="background-shapes">
+        <i class="cultural-icon fas fa-torii-gate"></i>
+        <i class="cultural-icon fas fa-fan"></i>
+        <i class="cultural-icon fas fa-globe-asia"></i>
+        <i class="cultural-icon fas fa-mountain"></i>
+        <i class="cultural-icon fas fa-dragon"></i>
+        <i class="cultural-icon fas fa-theater-masks"></i>
+        <i class="cultural-icon fas fa-scroll"></i>
+        <i class="cultural-icon fas fa-paper-plane"></i>
+    </div>
+
     <nav class="navbar">
         <div class="logo-container">
-            <img src="logo.svg" alt="TalkEasy Logo" class="nav-logo">
-            <span class="brand-name">Gengo.live</span>
+            <img src="logo.svg" alt="Gengo.live Logo" class="nav-logo">
+            <span class="brand-name">
+                Gengo live
+                <span class="accent-dot"></span>
+            </span>
         </div>
         <div class="nav-controls">
+            <div class="current-language">
+                <i class="fas fa-globe"></i>
+                <span id="current-language-display">Select Language</span>
+            </div>
             <button id="logout-btn" class="nav-button">
                 <i class="fas fa-sign-out-alt"></i>
                 <span>Exit</span>
@@ -27,7 +44,6 @@
     </nav>
 
     <div class="main-container">
-        <!-- Main Chat Area -->
         <div id="chat-container">
             <div id="video-grid">
                 <div class="video-wrapper">
@@ -69,6 +85,45 @@
         </div>
     </div>
 
+    <!-- Language Selection Screen -->
+    <div id="language-select-screen" class="language-select-screen">
+        <div class="language-select-content">
+            <h2>Choose Your Language</h2>
+            <p>Select the language you want to practice</p>
+            <div class="language-grid">
+                <button class="language-item" data-lang="ja">
+                    <span>日本語</span>
+                    <span class="flag">🇯🇵</span>
+                </button>
+                <button class="language-item" data-lang="zh">
+                    <span>中文</span>
+                    <span class="flag">🇨🇳</span>
+                </button>
+                <button class="language-item" data-lang="ko">
+                    <span>한국어</span>
+                    <span class="flag">🇰🇷</span>
+                </button>
+                <button class="language-item" data-lang="es">
+                    <span>Español</span>
+                    <span class="flag">🇪🇸</span>
+                </button>
+                <button class="language-item" data-lang="en">
+                    <span>English</span>
+                    <span class="flag">🇬🇧</span>
+                </button>
+                <button class="language-item" data-lang="fr">
+                    <span>Français</span>
+                    <span class="flag">🇫🇷</span>
+                </button>
+            </div>
+            <div class="language-select-notice">
+                <i class="fas fa-info-circle"></i>
+                <span>You'll be matched with someone learning the same language</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Waiting Screen -->
     <div id="waiting-screen" class="waiting-screen hidden">
         <div class="waiting-content">
             <div class="pulse-dot"></div>
@@ -77,9 +132,8 @@
         </div>
     </div>
 
-    <script type="module" src="config.js"></script>
+    <script type="module" src="firebase-init.js"></script>
     <script type="module" src="chat.js"></script>
     <script type="module" src="moderation.js"></script>
-
 </body>
 </html>
